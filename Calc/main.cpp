@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <math.h>
 
 using namespace std;
 int FindNextBracket(vector<char> v) {
@@ -15,13 +16,13 @@ int FindNextBracket(vector<char> v) {
 	return brackPos;
 }
 bool ChackForSymb(char symb) {
-	if (symb == '+' || symb == '-' || symb == '*' || symb == '/'||symb == '('||symb == ')')
+	if (symb == '+' || symb == '-' || symb == '*' || symb == '/'||symb == '('||symb == ')'|| symb == '^')
 	{
 		return true;
 	}
 	return false;
 }
-int Sum(vector<string> numbers, vector<char> symbols);
+double Sum(vector<string> numbers, vector<char> symbols);
 int main() {
 	string input;
 	int pos = 0;
@@ -39,11 +40,11 @@ int main() {
 			pos = i+1;
 		}
 		//read symbols
-		if (ChackForSymb(input[i])) {
+		if (ChackForSymb(input[i])) {//
 			symbols.push_back(input[i]);
 		}
 	}
-	for (int i = 0; i < numbers.size(); i++)
+	for (int i = 0; i < numbers.size(); i++)//carieli adgilebi ro darcheba prcxilebtan isini movashorot
 	{
 		if (numbers[i] == "")
 		{
@@ -51,19 +52,14 @@ int main() {
 		}
 	}
 	cout << endl;
-	for (int i = 0; i < numbers.size(); i++)
-	{
-		cout << numbers[i] << endl;
-	}
-	cout << endl;
-	int FullSum = Sum(numbers, symbols);
+	double FullSum = Sum(numbers, symbols);
 	cout << "++++++++++++++++++++++++" << endl<<" gamosaxulebis pasuxia:  " << FullSum << endl << "++++++++++++++++++++++++" << endl;
 	system("pause");
 	return 0;
 }
 //
-int SumInBrackets(vector<string> &_numbers, vector<char> &_symbols,int firstBrackPos) {//am metodit calke gadagvaqvs prchxilebshi arsebuli gamosaxuleba
-	int sumInBrackets = 0;
+double SumInBrackets(vector<string> &_numbers, vector<char> &_symbols,int firstBrackPos) {//am metodit calke gadagvaqvs prchxilebshi arsebuli gamosaxuleba
+	double sumInBrackets = 0;
 	vector<string> numbers;
 	vector<char> symbols;
 	for (int i = firstBrackPos+1; i < FindNextBracket(_symbols); i++)
@@ -81,29 +77,35 @@ int SumInBrackets(vector<string> &_numbers, vector<char> &_symbols,int firstBrac
 	sumInBrackets = Sum(numbers,symbols);//
 	return sumInBrackets;
 }
-int SumNumbers(vector<string> &numbers, vector<char> &symbols, int firstNumIndex,int secendNumberIndex,int symbolIndex) {//metodi krebavs or ricxvs mat shua arsebuli moqmedebis mixedvit shlis samive madgans da mat adgilas svams migebul shedegs
-	int flSumm = 0;
+double SumNumbers(vector<string> &numbers, vector<char> &symbols, int firstNumIndex,int secendNumberIndex,int symbolIndex) {//metodi krebavs or ricxvs mat shua arsebuli moqmedebis mixedvit shlis samive madgans da mat adgilas svams migebul shedegs
+	double flSumm = 0;
 	switch (symbols[symbolIndex]) {
 	case '+':
-		flSumm = atoi(numbers[firstNumIndex].c_str()) + atoi(numbers[secendNumberIndex].c_str());
+		flSumm = stod(numbers[firstNumIndex].c_str()) + stod(numbers[secendNumberIndex].c_str());
 		symbols.erase(symbols.begin() + symbolIndex);
 		numbers.erase(numbers.begin() + firstNumIndex, numbers.begin() + 2);
 		numbers.insert(numbers.begin()+ symbolIndex, to_string(flSumm));
 		break;
 	case '-':
-		flSumm = atoi(numbers[firstNumIndex].c_str()) - atoi(numbers[secendNumberIndex].c_str());
+		flSumm = stod(numbers[firstNumIndex].c_str()) - stod(numbers[secendNumberIndex].c_str());
 		symbols.erase(symbols.begin() + symbolIndex);
 		numbers.erase(numbers.begin() + firstNumIndex, numbers.begin() + 2);
 		numbers.insert(numbers.begin() + symbolIndex, to_string(flSumm));
 		break;
 	case '*':
-		flSumm = atoi(numbers[firstNumIndex].c_str()) * atoi(numbers[secendNumberIndex].c_str());
+		flSumm = stod(numbers[firstNumIndex].c_str()) * stod(numbers[secendNumberIndex].c_str());
 		symbols.erase(symbols.begin() + symbolIndex);
 		numbers.erase(numbers.begin() + firstNumIndex, numbers.begin() + firstNumIndex + 2);
 		numbers.insert(numbers.begin() + symbolIndex, to_string(flSumm));
 		break;
 	case '/':
-		flSumm = atoi(numbers[firstNumIndex].c_str()) / atoi(numbers[secendNumberIndex].c_str());
+		flSumm = stod(numbers[firstNumIndex].c_str()) / stod(numbers[secendNumberIndex].c_str());
+		symbols.erase(symbols.begin() + symbolIndex);
+		numbers.erase(numbers.begin() + firstNumIndex, numbers.begin() + firstNumIndex + 2);
+		numbers.insert(numbers.begin() + symbolIndex, to_string(flSumm));
+		break;
+	case '^':
+		flSumm = pow(stod(numbers[firstNumIndex].c_str()), stod(numbers[secendNumberIndex].c_str()));
 		symbols.erase(symbols.begin() + symbolIndex);
 		numbers.erase(numbers.begin() + firstNumIndex, numbers.begin() + firstNumIndex + 2);
 		numbers.insert(numbers.begin() + symbolIndex, to_string(flSumm));
@@ -111,9 +113,9 @@ int SumNumbers(vector<string> &numbers, vector<char> &symbols, int firstNumIndex
 	}
 	return flSumm;
 }
-int Sum(vector<string> numbers, vector<char> symbols)//metodi adgens prioritetebs da idzaxebs shesabamis metodebs
+double Sum(vector<string> numbers, vector<char> symbols)//metodi adgens prioritetebs da idzaxebs shesabamis metodebs
 {
-	int flSumm = 0;
+	double flSumm = 0;
 	
 	while (symbols.size() > 0)
 	{
@@ -127,6 +129,13 @@ int Sum(vector<string> numbers, vector<char> symbols)//metodi adgens prioriteteb
 					numbers.insert(numbers.begin() + i, to_string(newnum));
 					break;
 				}
+			}
+			if (symbols[i] == '^')
+			{
+				symbolIndex = i;
+				firstNumIndex = i;
+				secendNumberIndex = i + 1;
+				break;
 			}
 			if (symbols[i] == '*'|| symbols[i] == '/')
 			{
