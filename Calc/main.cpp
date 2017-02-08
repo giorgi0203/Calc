@@ -38,6 +38,7 @@ int main() {
 			numbers.push_back(num1);
 			pos = i+1;
 		}
+		//read symbols
 		if (ChackForSymb(input[i])) {
 			symbols.push_back(input[i]);
 		}
@@ -56,11 +57,12 @@ int main() {
 	}
 	cout << endl;
 	int FullSum = Sum(numbers, symbols);
-	cout << "++++++++++++++++++++++++" << endl << FullSum << endl << "++++++++++++++++++++++++" << endl;
+	cout << "++++++++++++++++++++++++" << endl<<" gamosaxulebis pasuxia:  " << FullSum << endl << "++++++++++++++++++++++++" << endl;
 	system("pause");
 	return 0;
 }
-int SumInBrackets(vector<string> &_numbers, vector<char> &_symbols,int firstBrackPos) {
+//
+int SumInBrackets(vector<string> &_numbers, vector<char> &_symbols,int firstBrackPos) {//am metodit calke gadagvaqvs prchxilebshi arsebuli gamosaxuleba
 	int sumInBrackets = 0;
 	vector<string> numbers;
 	vector<char> symbols;
@@ -71,15 +73,17 @@ int SumInBrackets(vector<string> &_numbers, vector<char> &_symbols,int firstBrac
 	for (int i = firstBrackPos; i < FindNextBracket(_symbols); i++)
 	{
 		numbers.push_back(_numbers[i]);
-	}//gavaqrot frchxilebs shignit ricxxvebi da simboloebi
+	}
+	//vshlit frchxilebs shignit ricxxvebsa da simboloebs
 	_numbers.erase(_numbers.begin() + firstBrackPos, _numbers.begin() + FindNextBracket(_symbols));
 	_symbols.erase(_symbols.begin() + firstBrackPos, _symbols.begin() + FindNextBracket(_symbols)+1);
-	sumInBrackets = Sum(numbers,symbols);
+	//
+	sumInBrackets = Sum(numbers,symbols);//
 	return sumInBrackets;
 }
-int SumNumbers(vector<string> &numbers, vector<char> &symbols, int firstNumIndex,int secendNumberIndex,int symbolIndex) {
+int SumNumbers(vector<string> &numbers, vector<char> &symbols, int firstNumIndex,int secendNumberIndex,int symbolIndex) {//metodi krebavs or ricxvs mat shua arsebuli moqmedebis mixedvit shlis samive madgans da mat adgilas svams migebul shedegs
 	int flSumm = 0;
-	switch (symbols[symbolIndex]) {//es unda gavitanot calke metodad
+	switch (symbols[symbolIndex]) {
 	case '+':
 		flSumm = atoi(numbers[firstNumIndex].c_str()) + atoi(numbers[secendNumberIndex].c_str());
 		symbols.erase(symbols.begin() + symbolIndex);
@@ -107,7 +111,7 @@ int SumNumbers(vector<string> &numbers, vector<char> &symbols, int firstNumIndex
 	}
 	return flSumm;
 }
-int Sum(vector<string> numbers, vector<char> symbols)//normal numbers
+int Sum(vector<string> numbers, vector<char> symbols)//metodi adgens prioritetebs da idzaxebs shesabamis metodebs
 {
 	int flSumm = 0;
 	
