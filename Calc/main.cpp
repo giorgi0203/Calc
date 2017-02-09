@@ -10,7 +10,6 @@ int FindNextBracket(vector<char> v) {
 	{
 		if (v[i] == ')') {
 			brackPos = i;
-			break;
 		}
 	}
 	return brackPos;
